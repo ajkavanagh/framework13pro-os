@@ -1,13 +1,12 @@
 ---
 # yaml-language-server: $schema=https://schema.blue-build.org/recipe-v1.json
 # image will be published to ghcr.io/<user>/<name>
-name: template
-# description will be included in the image's metadata
-description: This is my personal OS image.
+name: fw13pro-os-slim
+description: Lean-ish uBlue Sliverblue + Niri + River + Noctalia + Brew
 
 # the base image to build on top of (FROM) and the version tag to use
 base-image: ghcr.io/ublue-os/silverblue-main
-image-version: latest # You can pin to a specific version of Fedora as well
+image-version: latest
 
 # module configuration, executed in order
 # you can include multiple instances of the same module
@@ -21,10 +20,35 @@ modules:
     repos:
       copr:
         - atim/starship
+        - alebastr/river # Companion WMs for non-monolithic RiverWM
+        - scotjames/ghostty
     install:
       packages:
+        # Compositors & Window Managers
+        - niri # Scrollable-tiling Wayland compositor
+        - xwayland-satellite # Rootless XWayland for Steam & games
+        - river # Non-monolithic River compositor (0.4+/0.5+)
+        - river-rill # Scrolling WM for River
+        - river-kwm # Master/stack tiling WM for River
         - micro
+
+        # Starship from the copr
         - starship
+
+        # Shell, Laptop Controls & Gaming Helpers
+        - noctalia
+        - ghostty
+        - foot
+        - fuzzel
+        - wlsunset
+        - cava
+        - brightnessctl
+        - playerctl
+        - gamescope
+        - mangohud
+        - gamemode
+        - steam-devices
+
     remove:
       packages:
         # example: removing firefox (in favor of the flatpak)
@@ -42,4 +66,8 @@ modules:
           - org.gnome.Loupe
       - scope: user # Also add Flathub user repo, but no user packages
 
-  - type: signing # this sets up the proper policy & signing files for signed images to work fully
+  - type: brew
+    nofile-limits: true
+    brew-analytics: false
+
+  - type: signing
