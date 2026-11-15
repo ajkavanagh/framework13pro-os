@@ -21,7 +21,7 @@ modules:
       copr:
         - atim/starship
         - alebastr/river # Companion WMs for non-monolithic RiverWM
-        - scotjames/ghostty
+        - scottames/ghostty
     install:
       packages:
         # Compositors & Window Managers
